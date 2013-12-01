@@ -2,8 +2,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , primality = require('primality')
-  , dateable = require('dateable')
-  , _ = require('underscore');
+  , _ = require('underscore')
+  , moment = require("moment-timezone");
 
 var app = express();
 
@@ -24,12 +24,17 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res) {
+  res.render('tz301', {});
+});
 
-  var now = new Date();
+app.get(/^\/(Pacific|America|Atlantic|Arctic|Africa|Europe|Asia|Indian|Antartica)(\/.+)+/, function(req, res){
+
+  var timezone = req.params.join(''),
+    mow = moment().tz(timezone);
 
   function withFormat(format){
     var result = [],
-      dateStr = dateable(now, format);
+      dateStr = mow.format(format);
 
     result.push(dateStr);
     result.push(primality(dateStr))
@@ -44,15 +49,16 @@ app.get('/', function(req, res) {
   };
 
   res.render('index', {
-    titleTuple: ['Is Today a', 'Prime day'],
-    inspiredBy: "http://www.johndcook.com/blog/2013/11/29/todays-a-prime-day",
+    timezone: timezone,
     overall: _.any(tests, function(tr){ return tr[1]; }),
     results: tests
   });
 
 });
 
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
+
   console.log("Listening on " + port);
 });
