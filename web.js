@@ -48,7 +48,8 @@ app.get('/', function(req, res) {
 
 
   res.render('index', _.extend({
-    title: 'Is Today a Prime day?',
+    titleTuple: ['Is Today a', 'Prime day'],
+    inspiredBy: "http://www.johndcook.com/blog/2013/11/29/todays-a-prime-day"
   }, responseWrapper));
 
 });
