@@ -38,7 +38,7 @@ app.get(/^\/(Pacific|America|Atlantic|Arctic|Africa|Europe|Asia|Indian|Antartica
   var timezone = req.params.join(''),
     mow = moment().tz(timezone);
 
-  function withFormat(format){
+  function testWithFormat(format){
     var result = [],
       dateStr = mow.format(format);
 
@@ -48,12 +48,26 @@ app.get(/^\/(Pacific|America|Atlantic|Arctic|Africa|Europe|Asia|Indian|Antartica
     return result;
   }
 
+  function testPairs(){
+    var result = [], pairs = []
+
+    pairs.push(mow.format("YY"))
+    pairs.push(mow.format("MM"))
+    pairs.push(mow.format("DD"))
+
+    result.push(pairs);
+    result.push(_.every(pairs, primality))
+
+    return result;
+  }
+
   var tests = {
-    us:  withFormat('MMDDYY'),
-    long_us: withFormat('MMDDYYYY'),
-    eu:  withFormat('DDMMYY'),
-    long_eu: withFormat("DDMMYYYY"),
-    iso: withFormat('YYYYMMDD'),
+    us:  testWithFormat('MMDDYY'),
+    long_us: testWithFormat('MMDDYYYY'),
+    eu:  testWithFormat('DDMMYY'),
+    long_eu: testWithFormat("DDMMYYYY"),
+    iso: testWithFormat('YYYYMMDD'),
+    pairs: testPairs()
   };
 
   res.render('index', {
