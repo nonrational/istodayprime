@@ -25,6 +25,9 @@ if ('development' == app.get('env')) {
 app.locals({
   twitter_link : function(name){
     return "<a target='_blank' href='https://twitter.com/" + name + "'>@" + name + "</a>";
+  },
+  factor_link: function(num){
+    return "<a target='_blank' href='http://www.wolframalpha.com/input/?i=factor+" + num + "'>" + num + "</a>";
   }
 });
 

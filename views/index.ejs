@@ -10,9 +10,7 @@
     <p class='overall'><%= overall ? "Yup." : "Nope." %></p>
 
     <% for (var key in results) { %>
-        <p><%= key %> :
-            <a href="http://www.wolframalpha.com/input/?i=<%= results[key][0] %>"><%= results[key][0] %></a>
-            =&gt; <%= results[key][1] %></p>
+        <p><%= key %> : <%- factor_link(results[key][0]) %> =&gt; <%= results[key][1] %></p>
     <% } %>
   </body>
   <% include footer.ejs %>
