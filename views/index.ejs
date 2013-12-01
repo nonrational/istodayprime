@@ -9,6 +9,6 @@
     <% for (var key in results) { %>
         <p><%= key %> : <%- factor_link(results[key][0]) %> =&gt; <%= results[key][1] %></p>
     <% } %>
+    <% include footer.ejs %>
   </body>
-  <% include footer.ejs %>
 </html>
