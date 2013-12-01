@@ -1,6 +1,9 @@
 var express = require('express')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , primality = require('primality')
+  , dateable = require('dateable')
+  , _ = require('underscore');
 
 var app = express();
 
@@ -21,7 +24,33 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', function(req, res) {
-  res.render('index', { title: 'Is Today a Prime day?', result: "No." });
+
+  var now = new Date();
+
+  function withFormat(format){
+    var result = [],
+      dateStr = dateable(now, format);
+
+    result.push(dateStr);
+    result.push(primality(dateStr))
+
+    return result;
+  }
+
+  var responseWrapper = {
+    results : {
+      us:  withFormat('MMDDYY'),
+      eu:  withFormat('DDMMYY'),
+      iso: withFormat('YYYYMMDD')
+    }
+  };
+
+
+
+  res.render('index', _.extend({
+    title: 'Is Today a Prime day?',
+  }, responseWrapper));
+
 });
 
 var port = process.env.PORT || 5000;
