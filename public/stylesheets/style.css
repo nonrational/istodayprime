@@ -11,6 +11,14 @@ body {
     font-size: 80px;
 }
 
+footer {
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+    right: 0;
+    font-size: 12px;
+}
+
 a {
-  color: #00B7FF;
+  color: #006699;
 }

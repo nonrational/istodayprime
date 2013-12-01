@@ -23,6 +23,12 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+app.locals({
+  twitter_link : function(name){
+    return "<a target='_blank' href='https://twitter.com/" + name + "'>@" + name + "</a>";
+  }
+});
+
 app.get('/', function(req, res) {
   res.render('tz301', {});
 });
@@ -44,8 +50,10 @@ app.get(/^\/(Pacific|America|Atlantic|Arctic|Africa|Europe|Asia|Indian|Antartica
 
   var tests = {
     us:  withFormat('MMDDYY'),
+    long_us: withFormat('MMDDYYYY'),
     eu:  withFormat('DDMMYY'),
-    iso: withFormat('YYYYMMDD')
+    long_eu: withFormat("DDMMYYYY"),
+    iso: withFormat('YYYYMMDD'),
   };
 
   res.render('index', {
