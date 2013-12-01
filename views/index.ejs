@@ -5,9 +5,9 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1>Is today a <a href="http://www.johndcook.com/blog/2013/11/29/todays-a-prime-day">prime day</a>?</h1>
+    <!-- <h1>Is today a <a href="http://www.johndcook.com/blog/2013/11/29/todays-a-prime-day">prime day</a>?</h1> -->
     <!-- <p><%= timezone %></p> -->
-    <p class='overall'><%= overall ? "Yes!" : "Nope." %></p>
+    <p class='overall'><%= overall ? "Yup." : "Nope." %></p>
 
     <% for (var key in results) { %>
         <p><%= key %> :
@@ -15,7 +15,5 @@
             =&gt; <%= results[key][1] %></p>
     <% } %>
   </body>
-  <footer>
-    built by <%- twitter_link("nonrational") %>. inspired by <%- twitter_link("JohnDCook") %> &amp; <%- twitter_link("daniel_egan") %>
-  </footer>
+  <% include footer.ejs %>
 </html>

@@ -15,7 +15,6 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
@@ -30,13 +29,17 @@ app.locals({
 });
 
 app.get('/', function(req, res) {
-  res.render('tz301', {});
+  res.render('timezone-redirect', {});
 });
 
 app.get(/^\/(Pacific|America|Atlantic|Arctic|Africa|Europe|Asia|Indian|Antartica)(\/.+)+/, function(req, res){
 
-  var timezone = req.params.join(''),
-    mow = moment().tz(timezone);
+  try {
+    var timezone = req.params.join(''),
+      mow = moment().tz(timezone);
+  } catch(e){
+    throw new Error("Unknown Timezone: " + timezone);
+  }
 
   function testWithFormat(format){
     var result = [],
@@ -78,6 +81,20 @@ app.get(/^\/(Pacific|America|Atlantic|Arctic|Africa|Europe|Asia|Indian|Antartica
 
 });
 
+// app.get('*', function(req, res){
+//   res.render('404', { status: 404, error: req + " could not be found." });
+// });
+
+app.use(function(req, res, next){
+  res.render('404', { status: 404, url: req.url });
+});
+
+app.use(function(err, req, res, next){
+  res.render('500', {
+      status: err.status || 500
+    , error: err
+  });
+});
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {

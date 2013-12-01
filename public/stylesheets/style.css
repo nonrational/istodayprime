@@ -8,7 +8,8 @@ body {
 
 .overall {
     font-weight: bolder;
-    font-size: 80px;
+    font-size: 90px;
+    margin: 10px 0 80px;
 }
 
 footer {
