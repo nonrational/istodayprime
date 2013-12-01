@@ -5,10 +5,7 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <!-- <h1>Is today a <a href="http://www.johndcook.com/blog/2013/11/29/todays-a-prime-day">prime day</a>?</h1> -->
-    <!-- <p><%= timezone %></p> -->
     <p class='overall'><%= overall ? "Yup." : "Nope." %></p>
-
     <% for (var key in results) { %>
         <p><%= key %> : <%- factor_link(results[key][0]) %> =&gt; <%= results[key][1] %></p>
     <% } %>
