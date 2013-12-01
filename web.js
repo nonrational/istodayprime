@@ -37,20 +37,18 @@ app.get('/', function(req, res) {
     return result;
   }
 
-  var responseWrapper = {
-    results : {
-      us:  withFormat('MMDDYY'),
-      eu:  withFormat('DDMMYY'),
-      iso: withFormat('YYYYMMDD')
-    }
+  var tests = {
+    us:  withFormat('MMDDYY'),
+    eu:  withFormat('DDMMYY'),
+    iso: withFormat('YYYYMMDD')
   };
 
-
-
-  res.render('index', _.extend({
+  res.render('index', {
     titleTuple: ['Is Today a', 'Prime day'],
-    inspiredBy: "http://www.johndcook.com/blog/2013/11/29/todays-a-prime-day"
-  }, responseWrapper));
+    inspiredBy: "http://www.johndcook.com/blog/2013/11/29/todays-a-prime-day",
+    overall: _.any(tests, function(tr){ return tr[1]; }),
+    results: tests
+  });
 
 });
 

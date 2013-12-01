@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= titleTuple[0] + " " + titleTuple[1] %>?</title>
+    <title>is today prime?</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= titleTuple[0] %> <a href="<%= inspiredBy %>"><%= titleTuple[1] %></a>?</h1>
+    <h1>Is today a <a href="http://www.johndcook.com/blog/2013/11/29/todays-a-prime-day">prime day</a>?</h1>
+    <p class='overall'><%= overall ? "Yes!" : "Nope." %></p>
+
     <% for (var key in results) { %>
-        <p><%= key %>:<%= results[key][0] %> =&gt; <%= results[key][1] %></p>
+        <p><%= key %> :
+            <a href="http://www.wolframalpha.com/input/?i=<%= results[key][0] %>"><%= results[key][0] %></a>
+            =&gt; <%= results[key][1] %></p>
     <% } %>
+
   </body>
 </html>
