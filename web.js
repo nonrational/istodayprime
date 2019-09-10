@@ -1,6 +1,9 @@
 var express = require('express')
   , http = require('http')
   , path = require('path')
+  , bodyParser = require('body-parser')
+  , errorhandler = require('errorhandler')
+  , favicon = require('serve-favicon')
   , primality = require('primality')
   , _ = require('underscore')
   , moment = require("moment-timezone");
@@ -11,15 +14,13 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+  app.use(errorhandler());
 }
 
 var time_zones = [
@@ -36,17 +37,15 @@ var time_zones = [
   'Pacific/Apia','Pacific/Auckland','Pacific/Chatham','Pacific/Chuuk','Pacific/Easter','Pacific/Efate','Pacific/Enderbury','Pacific/Fakaofo','Pacific/Fiji','Pacific/Funafuti','Pacific/Galapagos','Pacific/Gambier','Pacific/Guadalcanal','Pacific/Guam','Pacific/Honolulu','Pacific/Johnston','Pacific/Kiritimati','Pacific/Kosrae','Pacific/Kwajalein','Pacific/Majuro','Pacific/Marquesas','Pacific/Midway','Pacific/Nauru','Pacific/Niue','Pacific/Norfolk','Pacific/Noumea','Pacific/Pago_Pago','Pacific/Palau','Pacific/Pitcairn','Pacific/Pohnpei','Pacific/Port_Moresby','Pacific/Rarotonga','Pacific/Saipan','Pacific/Tahiti','Pacific/Tarawa','Pacific/Tongatapu','Pacific/Wake','Pacific/Wallis'
 ];
 
-app.locals({
-  twitter_link : function(name){
-    return "<a target='_blank' href='https://twitter.com/" + name + "'>@" + name + "</a>";
-  },
+app.locals.tzs = time_zones
 
-  factor_link: function(num){
-    return "<a target='_blank' href='http://www.wolframalpha.com/input/?i=factor+" + num + "'>" + num + "</a>";
-  },
+app.locals.twitter_link = function(name){
+  return "<a target='_blank' href='https://twitter.com/" + name + "'>@" + name + "</a>";
+}
 
-  tzs : time_zones
-});
+app.locals.factor_link = function(num){
+  return "<a target='_blank' href='http://www.wolframalpha.com/input/?i=factor+" + num + "'>" + num + "</a>";
+}
 
 app.get('/', function(req, res) {
   res.render('timezone-redirect', {});
@@ -57,8 +56,8 @@ app.get('/', function(req, res) {
 app.get('/*', function(req, res){
 
   try {
-    var timezone = req.params.join(''),
-      mow = moment().tz(timezone);
+    var timezone = req.path.slice(1),
+        mow = moment.tz(timezone);
   } catch(e){
     throw new Error("Unknown Timezone: " + timezone);
   }
@@ -103,10 +102,6 @@ app.get('/*', function(req, res){
 
 });
 
-// app.get('*', function(req, res){
-//   res.render('404', { status: 404, error: req + " could not be found." });
-// });
-
 app.use(function(req, res, next){
   res.render('404', { status: 404, url: req.url });
 });
@@ -120,6 +115,5 @@ app.use(function(err, req, res, next){
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
-
   console.log("Listening on " + port);
 });
