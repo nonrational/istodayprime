@@ -10,9 +10,8 @@ http://istodayprime.herokuapp.com
 ## Development
 
 ```bash
-npm run start
-# enable debug logging
-npm run start:dev
+npm install && npm run start:dev
+
 # use `debugger` and chrome inspector.
 npm run debug
 ```
