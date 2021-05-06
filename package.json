@@ -9,7 +9,7 @@
     "morgan": "^1.9.1",
     "primality": "1.6.x",
     "serve-favicon": "^2.5.0",
-    "underscore": "1.5.2"
+    "underscore": "1.12.1"
   },
   "engines": {
     "node": "12.8.x",
