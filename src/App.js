@@ -1,7 +1,28 @@
 import './App.css'
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
 
-const timeInZone = (timeZone) => {
+const isPrime = (num) => {
+  if (num <= 1) {
+    return true
+  } else if (num <= 3) {
+    return true
+  } else if (num % 2 === 0 || num % 3 === 0) {
+    return false
+  }
+
+  let i = 5
+  while (i * i <= num) {
+    if (num % i === 0 || num % (i + 2) === 0) {
+      return false
+    }
+    i += 6
+  }
+  return true
+}
+
+const getPart = (o, name) => o.find((part) => part.type === name).value
+
+const nowParts = (timeZone) => {
   const formatter = new Intl.DateTimeFormat([], {
     timeZone: timeZone,
     year: 'numeric',
@@ -9,12 +30,34 @@ const timeInZone = (timeZone) => {
     day: 'numeric',
   })
 
-  return formatter.format(new Date())
+  const parts = formatter.formatToParts(new Date())
+
+  return [
+    `${getPart(parts, 'year')}${getPart(parts, 'month')}${getPart(parts, 'day')}`,
+    `${getPart(parts, 'month')}${getPart(parts, 'day')}${getPart(parts, 'year')}`,
+    `${getPart(parts, 'day')}${getPart(parts, 'month')}${getPart(parts, 'year')}`,
+  ].map((s) => Number.parseInt(s))
 }
 
 const Primality = ({ timeZone }) => {
-  const overall = true
-  return <p class='overall'>{overall ? 'Yup.' : 'Nope.'}%></p>
+  const primeParts = nowParts(timeZone).map((n) => {
+    return { num: n, prime: isPrime(n) }
+  })
+
+  const overall = primeParts.some(({ prime }) => prime)
+
+  return (
+    <>
+      <p className='overall'>{overall ? 'Yup.' : 'Nope.'}</p>
+      <ul>
+        {primeParts.map(({ num, prime }) => (
+          <li key={num}>
+            {num} - {prime ? 'prime' : 'not-prime'}
+          </li>
+        ))}
+      </ul>
+    </>
+  )
 }
 
 const GeoRedirect = ({ timeZone }) => {

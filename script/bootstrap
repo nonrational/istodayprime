@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+asdf install
+npm install -g pnpm
+pnpm i
