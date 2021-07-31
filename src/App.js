@@ -48,14 +48,16 @@ const Primality = ({ timeZone }) => {
 
   return (
     <>
-      <p className='overall'>{overall ? 'Yup.' : 'Nope.'}</p>
-      <ul>
-        {primeParts.map(({ num, prime }) => (
-          <li key={num}>
-            {num} - {prime ? 'prime' : 'not-prime'}
-          </li>
-        ))}
-      </ul>
+      <h1 className='overall'>{overall ? 'Yup.' : 'Nope.'}</h1>
+      <div>
+        <ul>
+          {primeParts.map(({ num, prime }) => (
+            <li key={num}>
+              {num} - {prime ? 'prime' : 'not-prime'}
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   )
 }
