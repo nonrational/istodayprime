@@ -52,14 +52,10 @@ const GeoRedirect = () => {
 function App() {
   return (
     <div className='App'>
-      <Router>
+      <Router basename={'/istodayprime'}>
         <Switch>
-          <Route path='/:region/:locale'>
-            <Primality />
-          </Route>
-          <Route path='/'>
-            <GeoRedirect />
-          </Route>
+          <Route path='/:region/:locale' component={Primality} />
+          <Route path='/' component={GeoRedirect} />
         </Switch>
         <Footer />
       </Router>

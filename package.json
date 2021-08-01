@@ -1,6 +1,7 @@
 {
-  "name": "v2",
-  "version": "0.1.0",
+  "name": "istodayprime",
+  "version": "0.0.1",
+  "homepage": "https://nonration.al/istodayprime",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
