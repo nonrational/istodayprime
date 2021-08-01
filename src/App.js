@@ -1,43 +1,6 @@
 import './App.css'
-import { BrowserRouter as Router, Link, Route, Switch, useHistory } from 'react-router-dom'
-
-const isPrime = (num) => {
-  if (num <= 1) {
-    return true
-  } else if (num <= 3) {
-    return true
-  } else if (num % 2 === 0 || num % 3 === 0) {
-    return false
-  }
-
-  let i = 5
-  while (i * i <= num) {
-    if (num % i === 0 || num % (i + 2) === 0) {
-      return false
-    }
-    i += 6
-  }
-  return true
-}
-
-const getPart = (o, name) => o.find((part) => part.type === name).value
-
-const nowParts = (timeZone) => {
-  const formatter = new Intl.DateTimeFormat([], {
-    timeZone: timeZone,
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-  })
-
-  const parts = formatter.formatToParts(new Date())
-
-  return [
-    `${getPart(parts, 'year')}${getPart(parts, 'month')}${getPart(parts, 'day')}`,
-    `${getPart(parts, 'month')}${getPart(parts, 'day')}${getPart(parts, 'year')}`,
-    `${getPart(parts, 'day')}${getPart(parts, 'month')}${getPart(parts, 'year')}`,
-  ].map((s) => Number.parseInt(s))
-}
+import { BrowserRouter as Router, Link, Route, Switch, useHistory, useParams } from 'react-router-dom'
+import { isPrime, getLocalDateAsIntegers } from './helpers'
 
 const TwitterLink = ({ user }) => <a href={`https://twitter.com/${user}`}>@{user}</a>
 
@@ -45,20 +8,18 @@ const Footer = () => {
   return (
     <footer>
       <span>
-        <Link to='/'>is today prime?</Link>
-      </span>
-      <span>
-        built by <TwitterLink user='nonrational' />
-      </span>
-      <span>
-        inspired by <TwitterLink user='JohnDCook' /> &amp; <TwitterLink user='daniel_egan' />
+        <Link to='/'>is today prime?</Link> — built by <TwitterLink user='nonrational' /> — inspired by{' '}
+        <TwitterLink user='JohnDCook' /> &amp; <TwitterLink user='daniel_egan' />
       </span>
     </footer>
   )
 }
 
-const Primality = ({ timeZone }) => {
-  const primeParts = nowParts(timeZone).map((n) => {
+const Primality = () => {
+  const { region, locale } = useParams()
+  const zone = region + '/' + locale
+
+  const primeParts = getLocalDateAsIntegers(zone).map((n) => {
     return { num: n, prime: isPrime(n) }
   })
 
@@ -67,34 +28,37 @@ const Primality = ({ timeZone }) => {
   return (
     <>
       <h1 className='overall'>{overall ? 'Yup.' : 'Nope.'}</h1>
+      {/* <h3>{zone}</h3> */}
       <div>
         {primeParts.map(({ num, prime }) => (
           <p key={num}>
             {num} &rarr; {prime ? 'true' : 'false'}
           </p>
         ))}
+        <p>
+          <a href='https://www.johndcook.com/blog/2013/11/29/todays-a-prime-day/'>international prime?</a> &rarr; ???
+        </p>
       </div>
     </>
   )
 }
 
-const GeoRedirect = ({ timeZone }) => {
+const GeoRedirect = () => {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
   useHistory().push(`/${timeZone}`)
   return null
 }
 
 function App() {
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-
   return (
     <div className='App'>
       <Router>
         <Switch>
-          <Route path='/:region/:zone'>
-            <Primality timeZone={timeZone} />
+          <Route path='/:region/:locale'>
+            <Primality />
           </Route>
           <Route path='/'>
-            <GeoRedirect timeZone={timeZone} />
+            <GeoRedirect />
           </Route>
         </Switch>
         <Footer />
