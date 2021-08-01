@@ -1,6 +1,6 @@
 import './App.css'
 import { BrowserRouter as Router, Link, Route, Switch, useHistory, useParams } from 'react-router-dom'
-import { isPrime, getLocalDateAsIntegers } from './helpers'
+import { isPrime, getNumericDates } from './helpers'
 
 const TwitterLink = ({ user }) => <a href={`https://twitter.com/${user}`}>@{user}</a>
 
@@ -14,30 +14,37 @@ const Footer = () => {
     </footer>
   )
 }
+const Bool = ({ val }) => (val ? 'true' : 'false')
+const Entry = ({ label, val }) => (
+  <p>
+    {label} &rarr; <Bool val={val} />
+  </p>
+)
 
 const Primality = () => {
   const { region, locale } = useParams()
-  const zone = region + '/' + locale
+  const zone = [region, locale].join('/')
 
-  const primeParts = getLocalDateAsIntegers(zone).map((n) => {
-    return { num: n, prime: isPrime(n) }
-  })
+  const primeParts = getNumericDates(zone).map(({ number, id }) => ({ id, num: number, prime: isPrime(number) }))
 
-  const overall = primeParts.some(({ prime }) => prime)
+  const euroPrime = primeParts.filter(({ id }) => id.startsWith('eu')).some(({ prime }) => prime)
+  const usPrime = primeParts.filter(({ id }) => id.startsWith('us')).some(({ prime }) => prime)
+  const isoPrime = primeParts.filter(({ id }) => id.startsWith('iso')).some(({ prime }) => prime)
+
+  const intlPrime = euroPrime && usPrime && isoPrime
+  const taPrime = euroPrime && usPrime
+  const anyPrime = euroPrime || usPrime || isoPrime
 
   return (
     <>
-      <h1 className='overall'>{overall ? 'Yup.' : 'Nope.'}</h1>
-      {/* <h3>{zone}</h3> */}
+      <h1 className='overall'>{anyPrime ? 'Yup.' : 'Nope.'}</h1>
       <div>
         {primeParts.map(({ num, prime }) => (
-          <p key={num}>
-            {num} &rarr; {prime ? 'true' : 'false'}
-          </p>
+          <Entry key={num} label={num} val={prime} />
         ))}
-        <p>
-          <a href='https://www.johndcook.com/blog/2013/11/29/todays-a-prime-day/'>international prime?</a> &rarr; ???
-        </p>
+        {/* <a href='https://www.johndcook.com/blog/2013/11/29/todays-a-prime-day/'>ℹ️</a></span>} */}
+        <Entry label='international prime' val={intlPrime} />
+        <Entry label='transatlantic prime' val={taPrime} />
       </div>
     </>
   )

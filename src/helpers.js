@@ -20,8 +20,9 @@ export const isPrime = (num) => {
 // get the value out of a type/value result from formatToParts
 const val = (partObj, partType) => partObj.find((part) => part.type === partType).value
 const joinParts = (parts, partTypeList) => partTypeList.map((partType) => val(parts, partType)).join('')
+const formatToInt = (parts, partTypeList) => Number.parseInt(joinParts(parts, partTypeList))
 
-export const getLocalDateAsIntegers = (timeZone) => {
+export const getNumericDates = (timeZone) => {
   const longFormatterOpts = { timeZone: timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }
   const longFormatter = new Intl.DateTimeFormat([], longFormatterOpts)
 
@@ -32,10 +33,10 @@ export const getLocalDateAsIntegers = (timeZone) => {
   const shortParts = shortFormatter.formatToParts(new Date())
 
   return [
-    joinParts(longParts, ['year', 'month', 'day']),
-    joinParts(longParts, ['month', 'day', 'year']),
-    joinParts(longParts, ['day', 'month', 'year']),
-    joinParts(shortParts, ['month', 'day', 'year']),
-    joinParts(shortParts, ['day', 'month', 'year']),
-  ].map((str) => Number.parseInt(str))
+    { number: formatToInt(longParts, ['year', 'month', 'day']), id: 'iso' },
+    { number: formatToInt(longParts, ['month', 'day', 'year']), id: 'us' },
+    { number: formatToInt(longParts, ['day', 'month', 'year']), id: 'eu' },
+    { number: formatToInt(shortParts, ['month', 'day', 'year']), id: 'us-short' },
+    { number: formatToInt(shortParts, ['day', 'month', 'year']), id: 'eu-short' },
+  ]
 }
