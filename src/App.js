@@ -39,6 +39,17 @@ const nowParts = (timeZone) => {
   ].map((s) => Number.parseInt(s))
 }
 
+const TwitterLink = ({ user }) => <a href={`https://twitter.com/${user}`}>@{user}</a>
+
+const Footer = () => {
+  return (
+    <footer>
+      <a href='/'>is today prime?</a>
+      built by <TwitterLink user='nonrational' />
+      inspired by <TwitterLink user='JohnDCook' /> &amp; <TwitterLink user='daniel_egan' />
+    </footer>
+  )
+}
 const Primality = ({ timeZone }) => {
   const primeParts = nowParts(timeZone).map((n) => {
     return { num: n, prime: isPrime(n) }
@@ -50,13 +61,11 @@ const Primality = ({ timeZone }) => {
     <>
       <h1 className='overall'>{overall ? 'Yup.' : 'Nope.'}</h1>
       <div>
-        <ul>
-          {primeParts.map(({ num, prime }) => (
-            <li key={num}>
-              {num} - {prime ? 'prime' : 'not-prime'}
-            </li>
-          ))}
-        </ul>
+        {primeParts.map(({ num, prime }) => (
+          <p key={num}>
+            {num} =&gt; {prime ? 'true' : 'false'}
+          </p>
+        ))}
       </div>
     </>
   )
@@ -82,6 +91,7 @@ function App() {
           </Route>
         </Switch>
       </Router>
+      <Footer />
     </div>
   )
 }
