@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/istodayprime/static/css/main.29c98b3a.chunk.css",
-    "main.js": "/istodayprime/static/js/main.d884aaa8.chunk.js",
-    "main.js.map": "/istodayprime/static/js/main.d884aaa8.chunk.js.map",
+    "main.js": "/istodayprime/static/js/main.dd906b00.chunk.js",
+    "main.js.map": "/istodayprime/static/js/main.dd906b00.chunk.js.map",
     "runtime-main.js": "/istodayprime/static/js/runtime-main.033842b9.js",
     "runtime-main.js.map": "/istodayprime/static/js/runtime-main.033842b9.js.map",
     "static/js/2.efee6d4b.chunk.js": "/istodayprime/static/js/2.efee6d4b.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.033842b9.js",
     "static/js/2.efee6d4b.chunk.js",
     "static/css/main.29c98b3a.chunk.css",
-    "static/js/main.d884aaa8.chunk.js"
+    "static/js/main.dd906b00.chunk.js"
   ]
 }
