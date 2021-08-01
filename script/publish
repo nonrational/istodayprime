@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+pnpm run build
+
+(
+    cd build/
+    ln -s index.html 404.html
+)
+
+pnpm run deploy
