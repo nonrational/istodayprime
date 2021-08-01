@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, Link, Route, Switch, useHistory } from 'react-router-dom'
 
 const isPrime = (num) => {
   if (num <= 1) {
@@ -44,12 +44,19 @@ const TwitterLink = ({ user }) => <a href={`https://twitter.com/${user}`}>@{user
 const Footer = () => {
   return (
     <footer>
-      <a href='/'>is today prime?</a>
-      built by <TwitterLink user='nonrational' />
-      inspired by <TwitterLink user='JohnDCook' /> &amp; <TwitterLink user='daniel_egan' />
+      <span>
+        <Link to='/'>is today prime?</Link>
+      </span>
+      <span>
+        built by <TwitterLink user='nonrational' />
+      </span>
+      <span>
+        inspired by <TwitterLink user='JohnDCook' /> &amp; <TwitterLink user='daniel_egan' />
+      </span>
     </footer>
   )
 }
+
 const Primality = ({ timeZone }) => {
   const primeParts = nowParts(timeZone).map((n) => {
     return { num: n, prime: isPrime(n) }
@@ -63,7 +70,7 @@ const Primality = ({ timeZone }) => {
       <div>
         {primeParts.map(({ num, prime }) => (
           <p key={num}>
-            {num} =&gt; {prime ? 'true' : 'false'}
+            {num} &rarr; {prime ? 'true' : 'false'}
           </p>
         ))}
       </div>
@@ -90,8 +97,8 @@ function App() {
             <GeoRedirect timeZone={timeZone} />
           </Route>
         </Switch>
+        <Footer />
       </Router>
-      <Footer />
     </div>
   )
 }
